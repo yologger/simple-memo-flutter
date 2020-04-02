@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'edit_screen.dart';
 
 class DetailScreen extends StatelessWidget {
   
