@@ -1,38 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:simplememo/src/core/Entity/MemoEntity.dart';
 import 'detail_screen.dart';
 import 'create_screen.dart';
-import '../theme/light/color.dart';
+import 'package:simplememo/src/core/Bloc/MemoBloc.dart';
 
-const dummy_posts = [
-  {
-    "id": 1,
-    "title": "Ronaldo",
-    "content": "What I need to buy....",
-    "isBookmarked": true
-  },
-  {
-    "id": 2,
-    "title": "Ramos",
-    "content": "What I need to buy....",
-    "isBookmarked": false
-  },
-  {
-    "id": 3,
-    "title": "Kane",
-    "content": "What I need to buy....",
-    "isBookmarked": false
-  },
-  {
-    "id": 4,
-    "title": "Benzema",
-    "content": "What I need to buy....",
-    "isBookmarked": false
-  }
-];
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({Key key}) : super(key: key);
-
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,25 +22,35 @@ class MainScreen extends StatelessWidget {
     return FloatingActionButton(
       child: Icon(Icons.add),
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => CreateScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => CreateScreen()));
       },
     );
   }
 
   Widget _buildBody(BuildContext context) {
-    return ListView.separated(
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text("${dummy_posts[index]["title"]}"),
-            trailing: Icon(Icons.favorite),
-            onTap: () {
-              // print("${index} is tapeed.");
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailScreen()));
-            },
-          );
-        },
-        separatorBuilder: (context, index) => const Divider(),
-        itemCount: dummy_posts.length
-    );
+    return StreamBuilder<List<MemoEntity>>(
+        stream: memoBloc.stream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: Text("No memo"));
+          } else {
+            return ListView.separated(
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text("${snapshot.data[index].title}"),
+                    trailing: snapshot.data[index].isBookMarked ? Icon(Icons.favorite) : null,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailScreen(snapshot.data[index])));
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) => const Divider(),
+                itemCount: snapshot.data.length);
+          }
+        });
   }
 }

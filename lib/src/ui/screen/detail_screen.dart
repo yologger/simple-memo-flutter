@@ -1,8 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:simplememo/src/core/Bloc/MemoBloc.dart';
+import 'package:simplememo/src/core/Entity/MemoEntity.dart';
 
-class DetailScreen extends StatelessWidget {
-  
-  const DetailScreen({Key key}) : super(key: key);
+class DetailScreen extends StatefulWidget {
+
+  final MemoEntity memo;
+  const DetailScreen(this.memo, {Key key}) : super(key: key);
+
+  @override
+  _DetailScreenState createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController contentController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    titleController.text = widget.memo.title;
+    contentController.text = widget.memo.content;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    titleController.dispose();
+    contentController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,13 +43,17 @@ class DetailScreen extends StatelessWidget {
     return AppBar(
       actions: <Widget>[
         IconButton(
-            icon:Icon(Icons.done),
+            icon: Icon(Icons.done),
             onPressed: () {
+              int id = widget.memo.id;
+              String title = titleController.text;
+              String content = contentController.text;
+              memoBloc.updateMemo(id, title, content);
               Navigator.of(context).pop();
             }
         )
       ],
-      title: Text("Detail screen"),
+      title: Text("${widget.memo.title}"),
     );
   }
 
@@ -30,12 +61,14 @@ class DetailScreen extends StatelessWidget {
     return Column(
       children: <Widget>[
         TextField(
+            controller: titleController,
             decoration: InputDecoration(
                 hintText: 'Title',
                 contentPadding: EdgeInsets.symmetric(horizontal: 10.0))),
         Expanded(
           child: Container(
               child: TextField(
+                controller: contentController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: InputDecoration(

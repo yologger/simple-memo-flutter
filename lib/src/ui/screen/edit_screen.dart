@@ -28,7 +28,14 @@ const dummy_posts = [
   }
 ];
 
-class RearrangeScreen extends StatelessWidget {
+
+class EditScreen extends StatefulWidget {
+  @override
+  _EditScreenState createState() => _EditScreenState();
+}
+
+class _EditScreenState extends State<EditScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,4 +75,6 @@ class RearrangeScreen extends StatelessWidget {
         itemCount: dummy_posts.length
     );
   }
+
 }
+
