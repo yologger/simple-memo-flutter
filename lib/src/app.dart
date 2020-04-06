@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplememo/src/ui/screen/edit_screen.dart';
 import 'package:simplememo/src/ui/screen/trash_screen.dart';
+import 'package:simplememo/src/ui/screen/remove_screen.dart';
 import 'ui/screen/main_screen.dart';
 import 'ui/screen/profile_screen.dart';
 import 'ui/screen/search_screen.dart';
@@ -65,11 +66,17 @@ class TabBarController extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Divider(),
           ListTile(
             title: Text("Edit"),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => EditScreen()));
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text("Remove"),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => RemoveScreen()));
             },
           ),
           Divider(),

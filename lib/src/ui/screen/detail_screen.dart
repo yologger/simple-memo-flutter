@@ -3,8 +3,8 @@ import 'package:simplememo/src/core/Bloc/MemosBloc.dart';
 import 'package:simplememo/src/core/Entity/MemoEntity.dart';
 
 class DetailScreen extends StatefulWidget {
-
   final MemoEntity memo;
+
   const DetailScreen(this.memo, {Key key}) : super(key: key);
 
   @override
@@ -12,7 +12,6 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
 
@@ -50,8 +49,7 @@ class _DetailScreenState extends State<DetailScreen> {
               String content = contentController.text;
               memosBloc.updateMemo(id, title, content);
               Navigator.of(context).pop();
-            }
-        )
+            })
       ],
       title: Text("${widget.memo.title}"),
     );
@@ -68,15 +66,15 @@ class _DetailScreenState extends State<DetailScreen> {
         Expanded(
           child: Container(
               child: TextField(
-                controller: contentController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10.0),
-                  border: InputBorder.none,
-                  hintText: 'Content',
-                ),
-              )),
+            controller: contentController,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(10.0),
+              border: InputBorder.none,
+              hintText: 'Content',
+            ),
+          )),
         ),
       ],
     );
@@ -89,10 +87,11 @@ class _DetailScreenState extends State<DetailScreen> {
         builder: (context, snapshot) {
           bool isBookMarked = widget.memo.isBookMarked;
 
-
           return FloatingActionButton(
             // child: Icon(Icons.favorite_border)
-            child: isBookMarked ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+            child: isBookMarked
+                ? Icon(Icons.favorite)
+                : Icon(Icons.favorite_border),
             onPressed: () {
               int id = widget.memo.id;
               memosBloc.toggleBookmark(id);

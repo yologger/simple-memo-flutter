@@ -26,16 +26,16 @@ class MemosBloc implements Bloc {
     _streamController.sink.add(_memos);
   }
 
+  removeMemo(int id) {
+    int idx = _memos.indexWhere((memo) => memo.id == id);
+    _memos.removeAt(idx);
+    _streamController.sink.add(_memos);
+  }
+
   updateMemo(int id, String title, String content) {
     int idx = _memos.indexWhere((memo) => memo.id == id);
     _memos[idx].title = title;
     _memos[idx].content = content;
-    _streamController.sink.add(_memos);
-  }
-
-  toggleBookmark(int id) {
-    int idx = _memos.indexWhere((memo) => memo.id == id);
-    _memos[idx].isBookMarked = !_memos[idx].isBookMarked;
     _streamController.sink.add(_memos);
   }
 
@@ -45,6 +45,12 @@ class MemosBloc implements Bloc {
     }
     final MemoEntity memo = _memos.removeAt(oldIndex);
     _memos.insert(newIndex, memo);
+    _streamController.sink.add(_memos);
+  }
+
+  toggleBookmark(int id) {
+    int idx = _memos.indexWhere((memo) => memo.id == id);
+    _memos[idx].isBookMarked = !_memos[idx].isBookMarked;
     _streamController.sink.add(_memos);
   }
 
