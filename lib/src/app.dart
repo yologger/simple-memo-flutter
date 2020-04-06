@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simplememo/src/ui/screen/rearrange_screen.dart';
-import 'package:simplememo/src/ui/screen/remove_screen.dart';
+import 'package:simplememo/src/ui/screen/edit_screen.dart';
+import 'package:simplememo/src/ui/screen/trash_screen.dart';
 import 'ui/screen/main_screen.dart';
 import 'ui/screen/profile_screen.dart';
 import 'ui/screen/search_screen.dart';
@@ -61,23 +61,22 @@ class TabBarController extends StatelessWidget {
 
   Widget _buildAboutDialog(BuildContext context) {
     return new AlertDialog(
-      title: Center(child: Text('Edit List')),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Divider(),
           ListTile(
-            title: Text("Rearrange"),
+            title: Text("Edit"),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => RearrangeScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => EditScreen()));
             },
           ),
           Divider(),
           ListTile(
-            title: Text("Remove"),
+            title: Text("Trash"),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => RemoveScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => TrashScreen()));
             },
           ),
           Divider(),

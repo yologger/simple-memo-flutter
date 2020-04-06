@@ -1,33 +1,6 @@
 import 'package:flutter/material.dart';
-
-
-const dummy_posts = [
-  {
-    "id": 1,
-    "title": "Ronaldo",
-    "content": "What I need to buy....",
-    "isBookmarked": true
-  },
-  {
-    "id": 2,
-    "title": "Ramos",
-    "content": "What I need to buy....",
-    "isBookmarked": false
-  },
-  {
-    "id": 3,
-    "title": "Kane",
-    "content": "What I need to buy....",
-    "isBookmarked": false
-  },
-  {
-    "id": 4,
-    "title": "Benzema",
-    "content": "What I need to buy....",
-    "isBookmarked": false
-  }
-];
-
+import 'package:simplememo/src/core/Bloc/MemosBloc.dart';
+import 'package:simplememo/src/core/Entity/MemoEntity.dart';
 
 class EditScreen extends StatefulWidget {
   @override
@@ -35,18 +8,14 @@ class EditScreen extends StatefulWidget {
 }
 
 class _EditScreenState extends State<EditScreen> {
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: _buildAppBar(context),
-        body: _buildBody(context)
-    );
+    return Scaffold(appBar: _buildAppBar(context), body: _buildBody(context));
   }
 
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text("Rearrange Screen"),
+      title: Text("Edit Screen"),
       leading: IconButton(
           icon: Icon(Icons.close, color: Colors.white),
           onPressed: () {
@@ -62,19 +31,26 @@ class _EditScreenState extends State<EditScreen> {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
-    return ListView.separated(
-        itemBuilder: (context, index) {
-          return ListTile(
-              title: Text("${dummy_posts[index]["title"]}"),
-              trailing: Icon(Icons.menu),
-              onTap: () {}
-          );
-        },
-        separatorBuilder: (context, index) => const Divider(),
-        itemCount: dummy_posts.length
+  Widget _buildBody(BuildContext) {
+    return StreamBuilder<List<MemoEntity>>(
+      stream: memosBloc.stream,
+      initialData: [],
+      builder: (context, snapshot) {
+        return ReorderableListView(
+            onReorder: _onReorder,
+            scrollDirection: Axis.vertical,
+            children: snapshot.data.map((memo) {
+              return ListTile(
+                key: ValueKey(memo.id.toString()),
+                title: Text("${memo.title}"),
+                trailing: Icon(Icons.menu),
+              );
+            }).toList());
+      },
     );
   }
 
+  void _onReorder(int oldIndex, int newIndex) {
+    memosBloc.reorderMemo(oldIndex, newIndex);
+  }
 }
-

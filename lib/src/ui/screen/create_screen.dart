@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplememo/src/core/Entity/MemoEntity.dart';
-import 'package:simplememo/src/core/Bloc/MemoBloc.dart';
+import 'package:simplememo/src/core/Bloc/MemosBloc.dart';
 
 class CreateScreen extends StatefulWidget {
   @override
@@ -41,14 +41,7 @@ class _CreateScreenState extends State<CreateScreen> {
           onPressed: () {
             print(titleController.text);
             print(contentController.text);
-
-//            MemoEntity new_memo = MemoEntity(
-//              "TESTER",
-//              titleController.text,
-//              contentController.text,
-//              false
-//            );
-            memoBloc.addMemo(titleController.text, contentController.text);
+            memosBloc.addMemo(titleController.text, contentController.text);
             Navigator.of(context).pop();
           },
         )

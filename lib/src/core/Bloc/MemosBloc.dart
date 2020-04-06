@@ -1,9 +1,8 @@
-import 'dart:async';
 import './Bloc.dart';
 import '../Entity/MemoEntity.dart';
 import 'package:rxdart/rxdart.dart';
 
-class MemoBloc implements Bloc {
+class MemosBloc implements Bloc {
 
   static List<MemoEntity> _memos = [
     MemoEntity(1, "Ronaldo", "title1", "content1", true),
@@ -17,13 +16,35 @@ class MemoBloc implements Bloc {
 
   addMemo(String title, String content) {
     MemoEntity new_memo = MemoEntity(
-      1,
+      4,
       "ronaldo",
       title,
       content,
       false,
     );
     _memos.add(new_memo);
+    _streamController.sink.add(_memos);
+  }
+
+  updateMemo(int id, String title, String content) {
+    int idx = _memos.indexWhere((memo) => memo.id == id);
+    _memos[idx].title = title;
+    _memos[idx].content = content;
+    _streamController.sink.add(_memos);
+  }
+
+  toggleBookmark(int id) {
+    int idx = _memos.indexWhere((memo) => memo.id == id);
+    _memos[idx].isBookMarked = !_memos[idx].isBookMarked;
+    _streamController.sink.add(_memos);
+  }
+
+  reorderMemo(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final MemoEntity memo = _memos.removeAt(oldIndex);
+    _memos.insert(newIndex, memo);
     _streamController.sink.add(_memos);
   }
 
@@ -34,4 +55,4 @@ class MemoBloc implements Bloc {
   }
 }
 
-var memoBloc = MemoBloc();
+var memosBloc = MemosBloc();
