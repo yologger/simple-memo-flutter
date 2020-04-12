@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplememo/src/core/Bloc/MemosBloc.dart';
+import 'package:simplememo/src/core/Bloc/MemoBloc.dart';
 import 'package:simplememo/src/core/Entity/MemoEntity.dart';
 
 class EditScreen extends StatefulWidget {
@@ -32,25 +32,25 @@ class _EditScreenState extends State<EditScreen> {
   }
 
   Widget _buildBody(BuildContext) {
-    return StreamBuilder<List<MemoEntity>>(
-      stream: memosBloc.stream,
-      initialData: [],
-      builder: (context, snapshot) {
-        return ReorderableListView(
-            onReorder: _onReorder,
-            scrollDirection: Axis.vertical,
-            children: snapshot.data.map((memo) {
-              return ListTile(
-                key: ValueKey(memo.id.toString()),
-                title: Text("${memo.title}"),
-                trailing: Icon(Icons.menu),
-              );
-            }).toList());
-      },
-    );
+//    return StreamBuilder<List<MemoEntity>>(
+//      stream: memosBloc.stream,
+//      initialData: [],
+//      builder: (context, snapshot) {
+//        return ReorderableListView(
+//            onReorder: _onReorder,
+//            scrollDirection: Axis.vertical,
+//            children: snapshot.data.map((memo) {
+//              return ListTile(
+//                key: ValueKey(memo.id.toString()),
+//                title: Text("${memo.title}"),
+//                trailing: Icon(Icons.menu),
+//              );
+//            }).toList());
+//      },
+//    );
   }
 
   void _onReorder(int oldIndex, int newIndex) {
-    memosBloc.reorderMemo(oldIndex, newIndex);
+    // memosBloc.reorderMemo(oldIndex, newIndex);
   }
 }

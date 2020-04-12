@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplememo/src/core/Entity/MemoEntity.dart';
-import 'package:simplememo/src/core/Bloc/MemosBloc.dart';
+import 'package:simplememo/src/core/Bloc/Bloc.dart';
 
 class CreateScreen extends StatefulWidget {
   @override
@@ -11,10 +12,13 @@ class _CreateScreenState extends State<CreateScreen> {
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
+  MemoBloc _memoBloc;
 
   @override
   void initState() {
     super.initState();
+    print("INIT CREATE SCREEN");
+    _memoBloc = BlocProvider.of<MemoBloc>(context);
   }
 
   @override
@@ -33,20 +37,26 @@ class _CreateScreenState extends State<CreateScreen> {
   }
 
   Widget _buildAppBar(BuildContext context) {
+
     return AppBar(
       title: Text("CREATE SCREEN"),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.done, color: Colors.white),
-          onPressed: () {
-            print(titleController.text);
-            print(contentController.text);
-            memosBloc.addMemo(titleController.text, contentController.text);
-            Navigator.of(context).pop();
+        Builder(
+          builder: (context) {
+            return IconButton(
+              icon: Icon(Icons.done, color: Colors.white),
+              onPressed: () async {
+                String title = titleController.text;
+                String content = contentController.text;
+                MemoEntity new_memo = MemoEntity(title: title, content: content);
+                await _memoBloc.add(CreateMemo(new_memo));
+                Navigator.of(context).pop();
+              },
+            );
           },
         )
       ],
-    );
+    );;
   }
 
   Widget _buildBody(BuildContext context) {
@@ -74,3 +84,5 @@ class _CreateScreenState extends State<CreateScreen> {
     );
   }
 }
+
+

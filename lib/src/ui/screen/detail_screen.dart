@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplememo/src/core/Bloc/MemosBloc.dart';
+import 'package:simplememo/src/core/Bloc/MemoBloc.dart';
 import 'package:simplememo/src/core/Entity/MemoEntity.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _DetailScreenState extends State<DetailScreen> {
               int id = widget.memo.id;
               String title = titleController.text;
               String content = contentController.text;
-              memosBloc.updateMemo(id, title, content);
+              // emosBloc.updateMemo(id, title, content);
               Navigator.of(context).pop();
             })
       ],
@@ -81,22 +81,22 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Widget _FAB(BuildContext context) {
-    return StreamBuilder<List<MemoEntity>>(
-        stream: memosBloc.stream,
-        initialData: [],
-        builder: (context, snapshot) {
-          bool isBookMarked = widget.memo.isBookMarked;
-
-          return FloatingActionButton(
-            // child: Icon(Icons.favorite_border)
-            child: isBookMarked
-                ? Icon(Icons.favorite)
-                : Icon(Icons.favorite_border),
-            onPressed: () {
-              int id = widget.memo.id;
-              memosBloc.toggleBookmark(id);
-            },
-          );
-        });
+//    return StreamBuilder<List<MemoEntity>>(
+//        stream: memosBloc.stream,
+//        initialData: [],
+//        builder: (context, snapshot) {
+//          bool isBookMarked = widget.memo.isBookmarked;
+//
+//          return FloatingActionButton(
+//            // child: Icon(Icons.favorite_border)
+//            child: isBookMarked
+//                ? Icon(Icons.favorite)
+//                : Icon(Icons.favorite_border),
+//            onPressed: () {
+//              int id = widget.memo.id;
+//              memosBloc.toggleBookmark(id);
+//            },
+//          );
+//        });
   }
 }
