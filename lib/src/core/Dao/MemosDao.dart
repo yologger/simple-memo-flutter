@@ -60,6 +60,13 @@ class MemosDao implements IDao {
     );
   }
 
+  updateMemo(MemoEntity memo) async {
+    final db = await database;
+    String sql = 'UPDATE ${MEMOS_TABLE} SET title = ?, content = ?  WHERE  id = ?';
+    var res = await db.rawUpdate(sql, [memo.title, memo.content, memo.id]);
+    return res;
+  }
+
   Future<MemoEntity> getMemoById(int id) async {
     final db = await database;
 

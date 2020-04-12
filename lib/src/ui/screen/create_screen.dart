@@ -17,7 +17,6 @@ class _CreateScreenState extends State<CreateScreen> {
   @override
   void initState() {
     super.initState();
-    print("INIT CREATE SCREEN");
     _memoBloc = BlocProvider.of<MemoBloc>(context);
   }
 

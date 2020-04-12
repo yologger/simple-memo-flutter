@@ -28,14 +28,12 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
   Stream<MemoState> mapEventToState(MemoEvent event) async* {
     if (event is LoadMemos) {
       yield* _mapLoadMemosToState();
-    } else if (event is ReloadMemos) {
-      yield* _mapReloadMemosToState(event);
     } else if (event is CreateMemo) {
       yield* _mapCreateMemoToState(event);
-    } else if (event is DeleteMemo) {
-      yield* _mapDeleteMemoToState(event);
     } else if (event is UpdateMemo) {
       yield* _mapUpdateMemoToState(event);
+    }else if (event is DeleteMemo) {
+      yield* _mapDeleteMemoToState(event);
     }
   }
 
@@ -49,13 +47,14 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
     List<MemoEntity> _memos;
     await _repository.insertMemo(event.memoEntity);
     _memos = await _repository.loadMemos();
-    print("LAST TITLE: ${_memos.last.title}"); // OK
-    // yield MemoCreateSuccess(memoEntities: _memos);
     yield MemosLoadSuccess(memos: _memos);
   }
 
-  Stream<MemoState> _mapReloadMemosToState(ReloadMemos event) async* {
-    yield MemosLoadSuccess(memos: event.memos);
+  Stream<MemoState> _mapUpdateMemoToState(UpdateMemo event) async* {
+    List<MemoEntity> _memos;
+    await _repository.updateMemo(event.memo);
+    _memos = await _repository.loadMemos();
+    yield MemosLoadSuccess(memos: _memos);
   }
 
   Stream<MemoState> _mapDeleteMemoToState(DeleteMemo event) async* {
@@ -64,16 +63,6 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
           .memos
           .where((memo) => memo.id != event.memo.id)
           .toList();
-      yield MemosLoadSuccess(memos: updatedMemos);
-      _saveMemos(updatedMemos);
-    }
-  }
-
-  Stream<MemoState> _mapUpdateMemoToState(UpdateMemo event) async* {
-    if (state is MemosLoadSuccess) {
-      final updatedMemos = (state as MemosLoadSuccess).memos.map((memo) {
-        return memo.id == event.memo.id ? event.memo : memo;
-      }).toList();
       yield MemosLoadSuccess(memos: updatedMemos);
       _saveMemos(updatedMemos);
     }

@@ -13,14 +13,11 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
-    print("INIT MAINSCREEN");
+   super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -37,9 +34,7 @@ class _MainScreenState extends State<MainScreen> {
       child: Icon(Icons.add),
       onPressed: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CreateScreen()));
+            context, MaterialPageRoute(builder: (context) => CreateScreen()));
 
 //        Navigator.push(
 //            context,
@@ -56,16 +51,13 @@ class _MainScreenState extends State<MainScreen> {
       if (state is MemosUnloaded) {
         return Center(child: Text("Loading..."));
       } else if (state is MemosLoadSuccess) {
-        if(state.memos.isEmpty) {
-          return Center(
-            child: Text("No Data")
-          );
+        if (state.memos.isEmpty) {
+          return Center(child: Text("No Data"));
         } else {
           return ListView.separated(
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Text("${state.memos[index].title}"),
-
                   trailing: state.memos[index].isBookmarked
                       ? Icon(Icons.favorite)
                       : null,
@@ -81,7 +73,7 @@ class _MainScreenState extends State<MainScreen> {
               separatorBuilder: (context, index) => const Divider(),
               itemCount: state.memos.length);
         }
-      } else if(state is MemoCreateSuccess) {
+      } else if (state is MemoCreateSuccess) {
         return Center(child: Text("CREATED"));
       } else {
         return Center(child: Text("Unknown Error"));

@@ -36,6 +36,10 @@ class MemoRepository implements RepositoryImpl {
     await _dbService.memosDao.insertMemo(memo);
   }
 
+  updateMemo(MemoEntity memo) async {
+    await _dbService.memosDao.updateMemo(memo);
+  }
+
   List<MemoEntity> getMemos() {
     print("getMemos()");
     return _cachedMemos;

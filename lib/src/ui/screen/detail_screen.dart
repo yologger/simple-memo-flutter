@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:simplememo/src/core/Bloc/Bloc.dart';
 import 'package:simplememo/src/core/Bloc/MemoBloc.dart';
 import 'package:simplememo/src/core/Entity/MemoEntity.dart';
 
@@ -14,10 +16,12 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
+  MemoBloc _memoBloc;
 
   @override
   void initState() {
     super.initState();
+    _memoBloc = BlocProvider.of<MemoBloc>(context);
     titleController.text = widget.memo.title;
     contentController.text = widget.memo.content;
   }
@@ -43,15 +47,19 @@ class _DetailScreenState extends State<DetailScreen> {
       actions: <Widget>[
         IconButton(
             icon: Icon(Icons.done),
-            onPressed: () {
+            onPressed: () async {
               int id = widget.memo.id;
               String title = titleController.text;
               String content = contentController.text;
-              // emosBloc.updateMemo(id, title, content);
+              MemoEntity memo = MemoEntity(
+                id: id,
+                title: title,
+                content: content
+              );
+              await _memoBloc.add(UpdateMemo(memo));
               Navigator.of(context).pop();
             })
       ],
-      title: Text("${widget.memo.title}"),
     );
   }
 

@@ -11,25 +11,16 @@ import 'ui/screen/test_screen.dart';
 import 'ui/theme/light/theme.dart';
 
 class App extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     // Global Bloc
-    return BlocProvider<MemoBloc> (
-      create: (context) => MemoBloc()..add(LoadMemos()),
-      child : MaterialApp(
-        title: 'Flutter Simple Memo',
-        theme: buildTheme(),
-        home: TabBarController(),
-      )
-    );
-
-//    return MaterialApp(
-//      title: 'Flutter Simple Memo',
-//      theme: buildTheme(),
-//      home: TabBarController(),
-//    );
+    return BlocProvider<MemoBloc>(
+        create: (context) => MemoBloc()..add(LoadMemos()),
+        child: MaterialApp(
+          title: 'Flutter Simple Memo',
+          theme: buildTheme(),
+          home: TabBarController(),
+        ));
   }
 }
 
@@ -78,10 +69,6 @@ class TabBarController extends StatelessWidget {
     return TabBarView(
       children: <Widget>[
         MainScreen(),
-//        BlocProvider<MemoBloc>(
-//            create: (context) => MemoBloc()..add(LoadMemos()),
-//            child: MainScreen()
-//        ),
         ProfileScreen(),
         TestScreen()
       ],
