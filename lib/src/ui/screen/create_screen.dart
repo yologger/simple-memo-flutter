@@ -9,7 +9,6 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
   MemoBloc _memoBloc;
@@ -36,7 +35,6 @@ class _CreateScreenState extends State<CreateScreen> {
   }
 
   Widget _buildAppBar(BuildContext context) {
-
     return AppBar(
       title: Text("CREATE SCREEN"),
       actions: <Widget>[
@@ -47,7 +45,8 @@ class _CreateScreenState extends State<CreateScreen> {
               onPressed: () async {
                 String title = titleController.text;
                 String content = contentController.text;
-                MemoEntity new_memo = MemoEntity(title: title, content: content);
+                MemoEntity new_memo =
+                    MemoEntity(title: title, content: content);
                 await _memoBloc.add(CreateMemo(new_memo));
                 Navigator.of(context).pop();
               },
@@ -55,7 +54,8 @@ class _CreateScreenState extends State<CreateScreen> {
           },
         )
       ],
-    );;
+    );
+    ;
   }
 
   Widget _buildBody(BuildContext context) {
@@ -83,5 +83,3 @@ class _CreateScreenState extends State<CreateScreen> {
     );
   }
 }
-
-

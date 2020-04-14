@@ -4,22 +4,32 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:simplememo/src/core/Bloc/BookmarkState.dart';
 import 'package:simplememo/src/core/Entity/MemoEntity.dart';
 import 'package:simplememo/src/core/Repository/MemoRepository.dart';
 
 import 'package:simplememo/src/core/Bloc/MemoEvent.dart';
 import 'package:simplememo/src/core/Bloc/MemoState.dart';
 
+import 'BookmarkBloc.dart';
+
 class MemoBloc extends Bloc<MemoEvent, MemoState> {
+
   MemoRepository _repository;
-  PublishSubject<List<MemoEntity>> _subject;
-  StreamSubscription<List<MemoEntity>> _subscription;
+  // final BookmarkBloc bookmarkBloc;
+  // StreamSubscription bookmarkSubscription;
 
   MemoBloc() {
+  // MemoBloc({this.bookmarkBloc}) {
     _repository = MemoRepository();
-  }
+//
+//    bookmarkSubscription = bookmarkBloc.listen((state) {
+//      if (state is BookmarkToggleSuccess) {
+//        add(LoadMemos());
+//      }
+//    });
 
-  List<MemoEntity> _memos = [];
+  }
 
   @override
   MemoState get initialState => MemosUnloaded();
@@ -32,9 +42,13 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
       yield* _mapCreateMemoToState(event);
     } else if (event is UpdateMemo) {
       yield* _mapUpdateMemoToState(event);
-    }else if (event is DeleteMemo) {
+    } else if (event is DeleteMemo) {
       yield* _mapDeleteMemoToState(event);
     }
+//      else if (event is ToggleBookmark) {
+//      print("TOGGLEBOOKMARK");
+//      yield* _mapToggleBookmarkToState(event);
+//    }
   }
 
   Stream<MemoState> _mapLoadMemosToState() async* {
@@ -54,6 +68,7 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
     List<MemoEntity> _memos;
     await _repository.updateMemo(event.memo);
     _memos = await _repository.loadMemos();
+    print("MEMOS_IS_BOOKMARKED: ${_memos.last.isBookmarked}");
     yield MemosLoadSuccess(memos: _memos);
   }
 
@@ -74,7 +89,7 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
 
   @override
   Future<void> close() {
-    _subscription?.cancel();
+    // _subscription?.cancel();
     return super.close();
   }
 }

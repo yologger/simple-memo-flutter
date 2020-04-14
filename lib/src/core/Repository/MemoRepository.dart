@@ -40,11 +40,18 @@ class MemoRepository implements RepositoryImpl {
     await _dbService.memosDao.updateMemo(memo);
   }
 
+  toggleMemo(MemoEntity memo) async {
+    await _dbService.memosDao.toggleMemo(memo);
+  }
+
   List<MemoEntity> getMemos() {
     print("getMemos()");
     return _cachedMemos;
   }
 
+  getIsBookmarked(MemoEntity memo) async {
+    return await _dbService.memosDao.getIsBookmarked(memo);
+  }
 //  DBService _dbService;
 //  List<MemoEntity> _memos = [];
 //  static PublishSubject<List<MemoEntity>> _subject;

@@ -8,29 +8,41 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
+
+  int count;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    count = 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
-          // DBHelper().createMemo(memo);
+          setState(() {
+            count = count + 1;
+          });
         }
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Text("THIS IS TEST PAGE"),
-            RaisedButton(
-              child: Text("getAllMemos"),
-              onPressed: () {
-                // DBHelper().getAllMemos();
-              },
-            )
-          ],
-        )
-      )
+      body: Wrapper(count),
+    );
+  }
+}
+
+class Wrapper extends StatelessWidget {
+
+  final int count;
+
+  const Wrapper(this.count);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text("${count}")
     );
   }
 }

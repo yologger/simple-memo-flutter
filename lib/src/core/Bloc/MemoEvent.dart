@@ -53,7 +53,15 @@ class UpdateMemo extends MemoEvent {
 
   @override
   List<Object> get props => [memo];
+}
 
+class ToggleBookmark extends MemoEvent {
+  final MemoEntity memo;
+
+  const ToggleBookmark(this.memo);
+
+  @override
+  List<Object> get props => [memo];
 }
 
 // {EVENT}

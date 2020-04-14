@@ -1,2 +1,1 @@
-class Entity {
-}
+export 'MemoEntity.dart';

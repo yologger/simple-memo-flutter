@@ -1,6 +1,8 @@
+import 'package:simplememo/src/core/Entity/EntityImpl.dart';
+
 import './Entity.dart';
 
-class MemoEntity implements Entity {
+class MemoEntity implements EntityImpl {
 
   int _id;
   String _writer;

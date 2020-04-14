@@ -1,4 +1,5 @@
-import 'package:simplememo/src/core/Dao/IDao.dart';
+
+import 'package:simplememo/src/core/Dao/DaoImpl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
@@ -10,10 +11,11 @@ import 'package:simplememo/src/core/Service/IService.dart';
 
 const String MEMOS_TABLE = "Memos";
 
-class MemosDao implements IDao {
-
+class MemosDao implements DaoImpl {
   MemosDao._();
+
   static final MemosDao _db = MemosDao._();
+
   factory MemosDao() => _db;
 
   static Database _database;
@@ -54,24 +56,47 @@ class MemosDao implements IDao {
       INSERT INTO ${MEMOS_TABLE} (writer, title, content)
       VALUES(?, ?, ?)
     ''';
-    var id = await db.rawInsert(
-        sql,
-        [memo.writer, memo.title, memo.content]
-    );
+    var id = await db.rawInsert(sql, [memo.writer, memo.title, memo.content]);
   }
 
   updateMemo(MemoEntity memo) async {
-    final db = await database;
-    String sql = 'UPDATE ${MEMOS_TABLE} SET title = ?, content = ?  WHERE  id = ?';
-    var res = await db.rawUpdate(sql, [memo.title, memo.content, memo.id]);
-    return res;
+    try {
+      final db = await database;
+      String sql =
+          'UPDATE ${MEMOS_TABLE} SET title = ?, content = ? WHERE  id = ?';
+      var res = await db.rawUpdate(sql, [memo.title, memo.content, memo.id]);
+      print("RESULT: ${res}");
+      return res;
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  getIsBookmarked(MemoEntity memo) async {
+    try {
+      final db = await database;
+      String sql = "SELECT is_bookmarked FROM ${MEMOS_TABLE} WHERE id = ?";
+      var rawData = await db.rawQuery(sql, [memo.id]);
+      return rawData.first["is_bookmarked"] == 1 ? true : false;
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  toggleMemo(MemoEntity memo) async {
+    try {
+      final db = await database;
+      String sql = 'UPDATE ${MEMOS_TABLE} SET is_bookmarked = ? WHERE id = ?';
+      await db.rawUpdate(sql, [memo.isBookmarked == true ? 0 : 1, memo.id]);
+    } catch (error) {
+      print(error);
+    }
   }
 
   Future<MemoEntity> getMemoById(int id) async {
     final db = await database;
 
-    String sql = "SELECT * FROM ${MEMOS_TABLE} WHERE id = ?" ;
+    String sql = "SELECT * FROM ${MEMOS_TABLE} WHERE id = ?";
     var result = await db.rawQuery(sql, [id]);
   }
-
 }

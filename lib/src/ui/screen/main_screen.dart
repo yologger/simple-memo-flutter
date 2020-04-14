@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'detail_screen.dart';
+import 'package:simplememo/src/core/Bloc/BookmarkBloc.dart';
+import 'package:simplememo/src/core/Bloc/BookmarkEvent.dart';
 import 'create_screen.dart';
 import 'package:simplememo/src/core/Bloc/Bloc.dart';
+
+import 'detail_screen.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -10,10 +13,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
   @override
   void initState() {
-   super.initState();
+    super.initState();
+    print("MAINSCREEN STATE INITSTATE");
   }
 
   @override
@@ -35,19 +38,12 @@ class _MainScreenState extends State<MainScreen> {
       onPressed: () {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => CreateScreen()));
-
-//        Navigator.push(
-//            context,
-//            MaterialPageRoute(
-//                builder: (context) => BlocProvider<MemoBloc>(
-//                    create: (context) => MemoBloc(), child: CreateScreen())));
       },
     );
   }
 
   Widget _buildBody(BuildContext context) {
     return BlocBuilder<MemoBloc, MemoState>(builder: (context, state) {
-      print("State has changed to ${state}.");
       if (state is MemosUnloaded) {
         return Center(child: Text("Loading..."));
       } else if (state is MemosLoadSuccess) {
@@ -62,11 +58,12 @@ class _MainScreenState extends State<MainScreen> {
                       ? Icon(Icons.favorite)
                       : null,
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                DetailScreen(state.memos[index])));
+                    MemoBloc memoBloc = BlocProvider.of<MemoBloc>(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => BlocProvider<BookmarkBloc>(
+                          create: (BuildContext context) => BookmarkBloc(memoBloc: memoBloc)..add(LoadBookmark(state.memos[index])),
+                          child: DetailScreen(state.memos[index]),
+                        )));
                   },
                 );
               },

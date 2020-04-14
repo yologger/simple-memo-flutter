@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplememo/src/core/Bloc/Bloc.dart';
+import 'package:simplememo/src/core/Bloc/BookmarkBloc.dart';
 import 'package:simplememo/src/ui/screen/edit_screen.dart';
 import 'package:simplememo/src/ui/screen/trash_screen.dart';
 import 'package:simplememo/src/ui/screen/remove_screen.dart';
@@ -14,13 +15,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Global Bloc
+
     return BlocProvider<MemoBloc>(
         create: (context) => MemoBloc()..add(LoadMemos()),
         child: MaterialApp(
           title: 'Flutter Simple Memo',
           theme: buildTheme(),
           home: TabBarController(),
-        ));
+        )
+    );
   }
 }
 
