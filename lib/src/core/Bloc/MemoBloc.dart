@@ -45,10 +45,6 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
     } else if (event is DeleteMemo) {
       yield* _mapDeleteMemoToState(event);
     }
-//      else if (event is ToggleBookmark) {
-//      print("TOGGLEBOOKMARK");
-//      yield* _mapToggleBookmarkToState(event);
-//    }
   }
 
   Stream<MemoState> _mapLoadMemosToState() async* {
@@ -68,19 +64,15 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
     List<MemoEntity> _memos;
     await _repository.updateMemo(event.memo);
     _memos = await _repository.loadMemos();
-    print("MEMOS_IS_BOOKMARKED: ${_memos.last.isBookmarked}");
     yield MemosLoadSuccess(memos: _memos);
   }
 
   Stream<MemoState> _mapDeleteMemoToState(DeleteMemo event) async* {
-    if (state is MemosLoadSuccess) {
-      final updatedMemos = (state as MemosLoadSuccess)
-          .memos
-          .where((memo) => memo.id != event.memo.id)
-          .toList();
-      yield MemosLoadSuccess(memos: updatedMemos);
-      _saveMemos(updatedMemos);
-    }
+    List<MemoEntity> _memos;
+    await _repository.deleteMemo(event.memo);
+    _memos = await _repository.loadMemos();
+    print("DELETED.");
+    yield MemosLoadSuccess(memos: _memos);
   }
 
   _saveMemos(List<MemoEntity> memos) {

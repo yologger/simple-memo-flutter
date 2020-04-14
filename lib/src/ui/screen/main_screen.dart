@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplememo/src/core/Bloc/BookmarkBloc.dart';
 import 'package:simplememo/src/core/Bloc/BookmarkEvent.dart';
+import 'package:simplememo/src/ui/theme/light/color.dart';
 import 'create_screen.dart';
 import 'package:simplememo/src/core/Bloc/Bloc.dart';
 
@@ -13,10 +14,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  MemoBloc _memoBloc;
+
   @override
   void initState() {
     super.initState();
-    print("MAINSCREEN STATE INITSTATE");
+    _memoBloc = BlocProvider.of<MemoBloc>(context);
   }
 
   @override
@@ -47,25 +50,59 @@ class _MainScreenState extends State<MainScreen> {
       if (state is MemosUnloaded) {
         return Center(child: Text("Loading..."));
       } else if (state is MemosLoadSuccess) {
+        print("MEMOSLOADSUCCESS");
+        print("LENGTH: ${state.memos.length}");
         if (state.memos.isEmpty) {
           return Center(child: Text("No Data"));
         } else {
           return ListView.separated(
               itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text("${state.memos[index].title}"),
-                  trailing: state.memos[index].isBookmarked
-                      ? Icon(Icons.favorite)
-                      : null,
-                  onTap: () {
-                    MemoBloc memoBloc = BlocProvider.of<MemoBloc>(context);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BlocProvider<BookmarkBloc>(
-                          create: (BuildContext context) => BookmarkBloc(memoBloc: memoBloc)..add(LoadBookmark(state.memos[index])),
-                          child: DetailScreen(state.memos[index]),
-                        )));
-                  },
-                );
+                return Dismissible(
+                    key: ValueKey(state.memos[index].id),
+                    background: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.white, AppColor.secondary],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                      ),
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Icon(Icons.delete, color: Colors.white,),
+                            Icon(Icons.delete, color: Colors.white,),
+                          ],
+                        ),
+                    ),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) async {
+                      await _memoBloc.add(DeleteMemo(state.memos[index]));
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text("${state.memos[index].title} dismissed")));
+                    },
+                    child: ListTile(
+                      title: Text("${state.memos[index].title}"),
+                      trailing: state.memos[index].isBookmarked
+                          ? Icon(Icons.favorite, color: AppColor.secondary)
+                          : null,
+                      onTap: () {
+                        MemoBloc memoBloc = BlocProvider.of<MemoBloc>(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BlocProvider<BookmarkBloc>(
+                                      create: (BuildContext context) =>
+                                          BookmarkBloc(memoBloc: memoBloc)
+                                            ..add(LoadBookmark(
+                                                state.memos[index])),
+                                      child: DetailScreen(state.memos[index]),
+                                    )));
+                      },
+                    ));
               },
               separatorBuilder: (context, index) => const Divider(),
               itemCount: state.memos.length);

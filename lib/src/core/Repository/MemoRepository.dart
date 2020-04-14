@@ -40,6 +40,10 @@ class MemoRepository implements RepositoryImpl {
     await _dbService.memosDao.updateMemo(memo);
   }
 
+  deleteMemo(MemoEntity memo) async {
+    await _dbService.memosDao.deleteMemo(memo);
+  }
+
   toggleMemo(MemoEntity memo) async {
     await _dbService.memosDao.toggleMemo(memo);
   }

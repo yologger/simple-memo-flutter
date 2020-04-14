@@ -72,6 +72,16 @@ class MemosDao implements DaoImpl {
     }
   }
 
+  deleteMemo(MemoEntity memo) async {
+    try {
+      final db = await database;
+      String sql = 'DELETE FROM ${MEMOS_TABLE} WHERE id = ?';
+      var res = await db.rawDelete(sql, [memo.id]);
+    } catch(error) {
+      print(error);
+    }
+  }
+
   getIsBookmarked(MemoEntity memo) async {
     try {
       final db = await database;
