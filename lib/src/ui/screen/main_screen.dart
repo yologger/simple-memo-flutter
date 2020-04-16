@@ -14,6 +14,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
   MemoBloc _memoBloc;
 
   @override
@@ -46,7 +47,9 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return BlocBuilder<MemoBloc, MemoState>(builder: (context, state) {
+    return BlocBuilder<MemoBloc, MemoState>(
+
+        builder: (context, state) {
       if (state is MemosUnloaded) {
         return Center(child: Text("Loading..."));
       } else if (state is MemosLoadSuccess) {

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplememo/src/core/Entity/MemoEntity.dart';
-import 'detail_screen.dart';
-import 'create_screen.dart';
-import 'package:simplememo/src/core/Bloc/MemoBloc.dart';
+import 'package:simplememo/src/ui/theme/light/color.dart';
 
 class TrashScreen extends StatefulWidget {
   @override
@@ -10,60 +7,118 @@ class TrashScreen extends StatefulWidget {
 }
 
 class _TrashScreenState extends State<TrashScreen> {
+  List<String> list;
+  List<String> selectedList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    list = ["Ronaldo", "Kane", "Benzema", "Bale", "Son", "Marcelo", "Ramos"];
+    selectedList = [];
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: _buildAppBar(context),
-        body: _buildBody(context)
-    );
+        appBar: _buildAppBar(),
+        body: Stack(
+          children: <Widget>[
+            ListView(
+                children: List.generate(
+              list.length,
+              (index) {
+                return ListItem(
+                  list[index],
+                  Key(list[index]),
+                );
+              },
+            )),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                  height: 100,
+                  color: AppColor.secondary,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton.icon(
+                          onPressed: () {},
+                          icon: Icon(Icons.delete_outline),
+                          label: Text("Remove",
+                              style: TextStyle(color: AppColor.onSecondary))),
+                      FlatButton.icon(
+                          onPressed: () {},
+                          icon: Icon(Icons.restore),
+                          label: Text("Restore")),
+                    ],
+                  )),
+            ),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                    margin: EdgeInsets.only(bottom: 120),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(200.0)),
+                      // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(150)),
+                      child: Container(
+                        width: 55,
+                        height: 35,
+                        color: AppColor.secondary,
+                        child: Center(
+                          child: Text("100"),
+                        ),
+                      ),
+                    ))),
+          ],
+        ));
   }
 
-  Widget _buildAppBar(BuildContext context) {
-    return AppBar(
-        title: Text("Remove Screen"),
-        actions: <Widget>[
-          FlatButton(
-            child: Text("Remove All"),
-            textColor: Colors.white,
-            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-            onPressed: () {},
-          ),
-        ],
-    );
+  Widget _buildAppBar() {
+    return AppBar(title: Text("Trash"));
   }
 
+  Widget _buildBottomButtons() {}
+}
 
-  Widget _buildBody(BuildContext context) {
-//    return StreamBuilder<List<MemoEntity>>(
-//        stream: memosBloc.deletedStream,
-//        initialData: [],
-//        builder: (context, snapshot) {
-//          return ListView.separated(
-//              itemBuilder: (context, index) {
-//                return ListTile(
-//                  title: Text("${snapshot.data[index].title}"),
-//                  trailing: Row(
-//                    mainAxisSize: MainAxisSize.min,
-//                    children: <Widget>[
-//                      IconButton(
-//                        icon: Icon(Icons.close),
-//                        onPressed: () {
-//                          memosBloc.removeMemo(snapshot.data[index].id);
-//                        },
-//                      ),
-//                      IconButton(
-//                        icon: Icon(Icons.restore_from_trash),
-//                        onPressed: () {
-//                          memosBloc.removeMemo(snapshot.data[index].id);
-//                        },
-//                      ),
-//                    ],
-//                  )
-//                );
-//              },
-//              separatorBuilder: (context, index) => const Divider(),
-//              itemCount: snapshot.data.length);
-//        });
+class ListItem extends StatefulWidget {
+  String title;
+  Key key;
+
+  ListItem(this.title, this.key);
+
+  @override
+  _ListItemState createState() => _ListItemState();
+}
+
+class _ListItemState extends State<ListItem> {
+  bool isSelected;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isSelected = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Ink(
+      color: isSelected ? AppColor.primary[50] : Colors.transparent,
+      child: ListTile(
+        key: widget.key,
+        title: Text("${widget.title}"),
+        onTap: () {
+          setState(() {
+            isSelected = !isSelected;
+          });
+        },
+      ),
+    );
   }
 }

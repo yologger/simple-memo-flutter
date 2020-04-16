@@ -12,6 +12,7 @@ import 'package:simplememo/src/core/Service/IService.dart';
 const String MEMOS_TABLE = "Memos";
 
 class MemosDao implements DaoImpl {
+
   MemosDao._();
 
   static final MemosDao _db = MemosDao._();
@@ -37,7 +38,8 @@ class MemosDao implements DaoImpl {
             writer TEXT,
             title TEXT,
             content TEXT,
-            is_bookmarked INTEGER NOT NULL DEFAULT 0
+            is_bookmarked INTEGER NOT NULL DEFAULT 0,
+            ordering INTEGER
           )
         ''');
     }, onUpgrade: (db, oldVersion, newVersion) {});

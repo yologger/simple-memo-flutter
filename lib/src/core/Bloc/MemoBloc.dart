@@ -16,8 +16,6 @@ import 'BookmarkBloc.dart';
 class MemoBloc extends Bloc<MemoEvent, MemoState> {
 
   MemoRepository _repository;
-  // final BookmarkBloc bookmarkBloc;
-  // StreamSubscription bookmarkSubscription;
 
   MemoBloc() {
   // MemoBloc({this.bookmarkBloc}) {
@@ -85,92 +83,3 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
     return super.close();
   }
 }
-
-//import 'package:simplememo/src/core/Repository/MemosRepository.dart';
-//
-//import './IBloc.dart';
-//import '../Entity/MemoEntity.dart';
-//import 'package:rxdart/rxdart.dart';
-//
-
-//
-//class MemosBloc implements IBloc {
-//
-//  static MemosRepository _memosRepository = MemosRepository();
-//
-//  static List<MemoEntity> _memos = [
-//    MemoEntity(id: 1, writer: "Ronaldo", title: "Title1", content: "Content1"),
-//    MemoEntity(id: 2, writer: "Benzema", title: "Title2", content: "Content2", isBookmarked: true),
-//    MemoEntity(id: 3, writer: "Kane", title: "Title3", content: "Content3", isBookmarked: true)
-//  ];
-//
-//  static List<MemoEntity> _deletedMemos = [
-//    MemoEntity(id: 1, writer: "Ronaldo", title: "Title1", content: "Content1"),
-//    MemoEntity(id: 2, writer: "Benzema", title: "Title2", content: "Content2", isBookmarked: true),
-//    MemoEntity(id: 3, writer: "Kane", title: "Title3", content: "Content3")
-//  ];
-//
-//  static BehaviorSubject<List<MemoEntity>> _memoStreamController = BehaviorSubject<List<MemoEntity>>.seeded(_memos);
-//  static BehaviorSubject<List<MemoEntity>> _deletedMemoStreamController = BehaviorSubject<List<MemoEntity>>.seeded(_deletedMemos);
-//
-//  get stream => _memoStreamController.stream;
-//  get deletedStream => _deletedMemoStreamController.stream;
-//
-//  static Future<List<MemoEntity>> getAllMemos() async {
-//    var results = await _memosRepository.getAllMemos();
-//    _memoStreamController.sink.add(results);
-//  }
-//
-//  createMemo(MemoEntity memo) {
-//    _memosRepository.insertMemo(memo);
-//    // _memos.add(new_memo);
-//    // _memoStreamController.sink.add(_memos);
-//  }
-//
-//  removeMemo(int id) {
-//    int idx = _memos.indexWhere((memo) => memo.id == id);
-//    MemoEntity deletedMemo = _memos.removeAt(idx);
-//    _deletedMemos.add(deletedMemo);
-//    _memoStreamController.sink.add(_memos);
-//    _deletedMemoStreamController.sink.add(_deletedMemos);
-//  }
-//
-//  removeMemoFromTrash(int id) {
-//    int idx = _memos.indexWhere((memo) => memo.id == id);
-//    MemoEntity deletedMemo = _memos.removeAt(idx);
-//    _deletedMemos.add(deletedMemo);
-//    _memoStreamController.sink.add(_memos);
-//    _deletedMemoStreamController.sink.add(_deletedMemos);
-//  }
-//
-//  updateMemo(int id, String title, String content) {
-//    int idx = _memos.indexWhere((memo) => memo.id == id);
-//    _memos[idx].title = title;
-//    _memos[idx].content = content;
-//    _memoStreamController.sink.add(_memos);
-//  }
-//
-//  reorderMemo(int oldIndex, int newIndex) {
-//    if (newIndex > oldIndex) {
-//      newIndex -= 1;
-//    }
-//    final MemoEntity memo = _memos.removeAt(oldIndex);
-//    _memos.insert(newIndex, memo);
-//    _memoStreamController.sink.add(_memos);
-//  }
-//
-//  toggleBookmark(int id) {
-//    int idx = _memos.indexWhere((memo) => memo.id == id);
-//    _memos[idx].isBookmarked = !_memos[idx].isBookmarked;
-//    _memoStreamController.sink.add(_memos);
-//  }
-//
-//  @override
-//  void dispose() {
-//    // TODO: implement dispose
-//    _memoStreamController.close();
-//    _deletedMemoStreamController.close();
-//  }
-//}
-//
-//var memosBloc = MemosBloc();

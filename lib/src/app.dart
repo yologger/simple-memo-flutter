@@ -6,7 +6,7 @@ import 'package:simplememo/src/ui/screen/edit_screen.dart';
 import 'package:simplememo/src/ui/screen/trash_screen.dart';
 import 'package:simplememo/src/ui/screen/remove_screen.dart';
 import 'ui/screen/main_screen.dart';
-import 'ui/screen/profile_screen.dart';
+import 'ui/screen/bookmark_screen.dart';
 import 'ui/screen/search_screen.dart';
 import 'ui/screen/test_screen.dart';
 import 'ui/theme/light/theme.dart';
@@ -22,8 +22,7 @@ class App extends StatelessWidget {
           title: 'Flutter Simple Memo',
           theme: buildTheme(),
           home: TabBarController(),
-        )
-    );
+        ));
   }
 }
 
@@ -33,7 +32,7 @@ class TabBarController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           appBar: _buildAppBar(context),
           body: _buildBody(context),
@@ -42,39 +41,43 @@ class TabBarController extends StatelessWidget {
 
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
+      leading: IconButton(
+        icon: Icon(Icons.search, color: Colors.white),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SearchScreen()));
+        },
+      ),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.search, color: Colors.white),
+          icon: Icon(Icons.reorder, color: Colors.white),
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SearchScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => EditScreen()));
+//            showDialog(
+//              context: context,
+//              builder: (BuildContext context) => _buildAboutDialog(context),
+//            );
           },
         ),
         IconButton(
-          icon: Icon(Icons.more_vert, color: Colors.white),
+          icon: Icon(Icons.delete, color: Colors.white),
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => _buildAboutDialog(context),
-            );
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TrashScreen()));
           },
         ),
       ],
       bottom: TabBar(tabs: <Widget>[
         Tab(icon: Icon(Icons.home), text: 'Main'),
-        Tab(icon: Icon(Icons.account_circle), text: 'Profile'),
-        Tab(icon: Icon(Icons.error), text: 'Test'),
+        Tab(icon: Icon(Icons.favorite), text: 'Bookmark'),
       ]),
     );
   }
 
   Widget _buildBody(BuildContext context) {
     return TabBarView(
-      children: <Widget>[
-        MainScreen(),
-        ProfileScreen(),
-        TestScreen()
-      ],
+      children: <Widget>[MainScreen(), BookmarkScreen()],
     );
   }
 
