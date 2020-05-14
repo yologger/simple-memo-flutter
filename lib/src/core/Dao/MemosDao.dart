@@ -37,9 +37,19 @@ class MemosDao implements DaoImpl {
             title TEXT,
             content TEXT,
             is_bookmarked INTEGER NOT NULL DEFAULT 0,
-            is_deleted INTEGER NOT NULL DEFAULT 0
+            is_deleted INTEGER NOT NULL DEFAULT 0,
+            sequence INTEGER UNIQUE
           )
         ''');
+
+      await db.execute('''
+        CREATE TRIGGER increment_sequence
+        AFTER INSERT ON ${MEMOS_TABLE}
+        BEGIN
+	        UPDATE ${MEMOS_TABLE} SET sequence = NEW.id WHERE id = NEW.id;
+        END;
+      ''');
+
     }, onUpgrade: (db, oldVersion, newVersion) {});
   }
 
@@ -47,6 +57,7 @@ class MemosDao implements DaoImpl {
     final db = await database;
     String sql = "SELECT * FROM ${MEMOS_TABLE} where is_deleted = ?";
     var rawData = await db.rawQuery(sql, [0]);
+    print("RAWDATA: ${rawData}");
     return rawData;
   }
 
@@ -77,7 +88,6 @@ class MemosDao implements DaoImpl {
       print(error);
     }
   }
-
 
   getIsBookmarked(MemoEntity memo) async {
     try {
@@ -126,7 +136,6 @@ class MemosDao implements DaoImpl {
       print(error);
     }
   }
-
 
   restoreMemoFromTrash(MemoEntity memo) async {
     try {
