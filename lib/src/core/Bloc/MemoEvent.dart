@@ -9,9 +9,7 @@ abstract class MemoEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadMemos extends MemoEvent {
-
-}
+class LoadMemos extends MemoEvent {}
 
 class CreateMemo extends MemoEvent {
   final MemoEntity memoEntity;
@@ -22,20 +20,6 @@ class CreateMemo extends MemoEvent {
   List<Object> get props => [memoEntity];
 }
 
-class RemoveEvent extends MemoEvent {
-
-}
-
-class ReloadMemos extends MemoEvent {
-
-  final List<MemoEntity> memos;
-
-  const ReloadMemos(this.memos);
-
-  @override
-  List<Object> get props => [memos];
-}
-
 class DeleteMemo extends MemoEvent {
   final MemoEntity memo;
 
@@ -43,7 +27,15 @@ class DeleteMemo extends MemoEvent {
 
   @override
   List<Object> get props => [memo];
+}
 
+class DeleteMemos extends MemoEvent {
+  final List<MemoEntity> memos;
+
+  const DeleteMemos(this.memos);
+
+  @override
+  List<Object> get props => [memos];
 }
 
 class UpdateMemo extends MemoEvent {
@@ -64,7 +56,12 @@ class ToggleBookmark extends MemoEvent {
   List<Object> get props => [memo];
 }
 
-// {EVENT}
-// LoadMemos
-// UpdateMemos
-//
+class SwapMemos extends MemoEvent {
+  final MemoEntity memo1;
+  final MemoEntity memo2;
+
+  SwapMemos(this.memo1, this.memo2);
+
+  @override
+  List<Object> get props => [memo1, memo2];
+}

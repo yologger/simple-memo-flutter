@@ -1,77 +1,130 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplememo/src/core/Bloc/Bloc.dart';
-import 'package:simplememo/src/core/Bloc/BookmarkBloc.dart';
-import 'package:simplememo/src/core/Bloc/BookmarkEvent.dart';
 import 'package:simplememo/src/core/Bloc/MemoBloc.dart';
 import 'package:simplememo/src/core/Entity/MemoEntity.dart';
+import 'package:simplememo/src/ui/component/BottomMenuIconButton.dart';
 import 'package:simplememo/src/ui/theme/light/color.dart';
 
-import 'detail_screen.dart';
+
 
 class EditScreen extends StatefulWidget {
+  EditScreen({Key key}) : super(key: key);
+
   @override
   _EditScreenState createState() => _EditScreenState();
 }
 
 class _EditScreenState extends State<EditScreen> {
+
   List<String> list;
   List<String> selectedList;
 
+
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    list = ["Ronaldo", "Kane", "Benzema", "Bale", "Son", "Marcelo", "Ramos"];
+    list = [
+      "Ronaldo",
+      "Kane",
+      "Benzema",
+      "Bale",
+      "Son",
+      "Marcelo",
+      "Ramos",
+      "Ronaldo",
+      "Kane",
+      "Benzema",
+      "Bale",
+      "Son",
+      "Marcelo",
+      "Ramos"
+    ];
     selectedList = [];
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
-      body: ReorderableListView(
-          onReorder: _onReorder,
-          scrollDirection: Axis.vertical,
-          children: List.generate(
-            list.length,
-                (index) {
-              return ListItem(
-                list[index],
-                Key(list[index]),
-              );
-//              return ListTile(
-//                key: ValueKey(list[index]),
-//                title: Text("${list[index]}"),
-//              );
-            },
+        appBar: _buildAppBar(),
+        body: Stack(
+          children: <Widget>[
+            _buildListView(),
+            _buildCounter(),
+            _buildBottomMenus()
+          ],
+        ));
+  }
+
+  Widget _buildListView() {
+    return ListView(
+        children: List.generate(
+      list.length,
+      (index) {
+        return ListItem(
+          list[index],
+          Key(list[index]),
+        );
+      },
+    ));
+  }
+
+  Widget _buildAppBar() {
+    return AppBar(title: Text("Edit"));
+  }
+
+  Widget _buildBottomMenus() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+          height: 100,
+          color: AppColor.secondary,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              FlatButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.delete_outline),
+                  label: Text("Remove",
+                      style: TextStyle(color: AppColor.onSecondary))),
+              FlatButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.restore),
+                  label: Text("Restore")),
+            ],
           )),
     );
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(
-          () {
-        if (newIndex > oldIndex) {
-          newIndex -= 1;
-        }
-        final String item = list.removeAt(oldIndex);
-        list.insert(newIndex, item);
-      },
-    );
+  Widget _buildCounter() {
+    return Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+            margin: EdgeInsets.only(bottom: 120),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(200.0)),
+              // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(150)),
+              child: Container(
+                width: 55,
+                height: 35,
+                color: AppColor.secondary,
+                child: Center(
+                  child: Text("100"),
+                ),
+              ),
+            )));
   }
 
-  Widget _buildAppBar() {
-    return AppBar(
-        title: Text("Edit Screen"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.check),
-            onPressed: () {},
-          ),
-        ],
-    );
-  }
+
 }
+
 
 class ListItem extends StatefulWidget {
   String title;
@@ -110,71 +163,3 @@ class _ListItemState extends State<ListItem> {
     );
   }
 }
-
-//class EditScreen extends StatefulWidget {
-//  @override
-//  _EditScreenState createState() => _EditScreenState();
-//}
-//
-//class _EditScreenState extends State<EditScreen> {
-//
-//  List<String> alphabetList;
-//
-//  @override
-//  void initState() {
-//    // TODO: implement initState
-//    super.initState();
-//    alphabetList = ["a", "b", "c", "d", "e", "f"];
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(appBar: _buildAppBar(context), body: _buildBody());
-//  }
-//
-//  Widget _buildAppBar(BuildContext context) {
-//    return AppBar(
-//      title: Text("Reorder"),
-//      leading: IconButton(
-//          icon: Icon(Icons.close, color: Colors.white),
-//          onPressed: () {
-//            Navigator.of(context).pop();
-//          }),
-//      actions: <Widget>[
-//        IconButton(
-//            icon: Icon(Icons.done, color: Colors.white),
-//            onPressed: () {
-//              Navigator.of(context).pop();
-//            })
-//      ],
-//    );
-//  }
-//
-//  Widget _buildBody() {
-//    return ReorderableListView(
-//      onReorder: _onReorder,
-//      scrollDirection: Axis.vertical,
-//      children: List.generate(
-//        alphabetList.length,
-//        (index) {
-//          return ListTile(
-//            key: ValueKey(alphabetList[index]),
-//            title: Text("${alphabetList[index]}"),
-//          );
-//        },
-//      ),
-//    );
-//  }
-//
-//  void _onReorder(int oldIndex, int newIndex) {
-//    setState(
-//      () {
-//        if (newIndex > oldIndex) {
-//          newIndex -= 1;
-//        }
-//        final String item = alphabetList.removeAt(oldIndex);
-//        alphabetList.insert(newIndex, item);
-//      },
-//    );
-//  }
-//}

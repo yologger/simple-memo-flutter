@@ -1,8 +1,6 @@
-import 'package:equatable/equatable.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:simplememo/src/core/Entity/MemoEntity.dart';
 
-abstract class MemoState  {
+abstract class MemoState {
   const MemoState();
 
   @override
@@ -11,49 +9,21 @@ abstract class MemoState  {
 
 class MemosUnloaded extends MemoState {}
 
-class LoadingState  extends MemoState {
-
-}
-
-class MemosLoadSuccess extends MemoState {
+class LoadMemosSuccess extends MemoState {
   final List<MemoEntity> memos;
 
-  const MemosLoadSuccess({
+  const LoadMemosSuccess({
     this.memos,
   });
 }
+class LoadMemosFailure extends MemoState {}
 
-class MemoCreateSuccess extends MemoState {
+class LoadMemosInProgress extends MemoState {}
+
+class CreateMemoSuccess extends MemoState {
   final List<MemoEntity> memos;
 
-  const MemoCreateSuccess({
+  const CreateMemoSuccess({
     this.memos,
   });
 }
-
-class MemosLoadFailure extends MemoState {
-
-}
-
-class MemosReloadSuccess extends MemoState {
-  final List<MemoEntity> memos;
-
-  const MemosReloadSuccess({
-    this.memos,
-  });
-}
-class CreatedState extends MemoState {}
-
-class ErrorState extends MemoState {}
-
-// [State]
-// MemoUninitialized
-// MemoLoadInitial
-// MemoLoadInProgress
-// MemoLoadSuccess
-// MemoLoadFailure
-
-// MemoCreateInitial
-// MemoCreateInProgress
-// MemoCreateSuccess
-// MemoCreateFailure

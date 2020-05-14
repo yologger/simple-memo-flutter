@@ -18,15 +18,7 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
   MemoRepository _repository;
 
   MemoBloc() {
-  // MemoBloc({this.bookmarkBloc}) {
     _repository = MemoRepository();
-//
-//    bookmarkSubscription = bookmarkBloc.listen((state) {
-//      if (state is BookmarkToggleSuccess) {
-//        add(LoadMemos());
-//      }
-//    });
-
   }
 
   @override
@@ -42,44 +34,56 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
       yield* _mapUpdateMemoToState(event);
     } else if (event is DeleteMemo) {
       yield* _mapDeleteMemoToState(event);
+    } else if (event is SwapMemos) {
+      yield* _mapSwapMemosToState(event);
     }
+  }
+//
+//  Stream<MemoState> _mapMoveMemoToTrashToState(DeleteMemo event) async*{
+//    List<MemoEntity> _memos;
+//    await _repository.moveMemoToTrash(event.memo);
+//    // await _repository.deleteMemo(event.memo);
+//    _memos = await _repository.loadMemos();
+//    yield LoadMemosSuccess(memos: _memos);
+//  }
+
+  Stream<MemoState> _mapDeleteMemoToState(DeleteMemo event) async* {
+    List<MemoEntity> _memos;
+    await _repository.deleteMemo(event.memo);
+    _memos = await _repository.loadMemos();
+    yield LoadMemosSuccess(memos: _memos);
+  }
+
+  Stream<MemoState> _mapSwapMemosToState(SwapMemos event) async* {
+    List<MemoEntity> _memos;
+    _memos = await _repository.loadMemos();
+    yield LoadMemosSuccess(memos: _memos);
   }
 
   Stream<MemoState> _mapLoadMemosToState() async* {
     List<MemoEntity> _memos;
     _memos = await _repository.loadMemos();
-    yield MemosLoadSuccess(memos: _memos);
+    yield LoadMemosSuccess(memos: _memos);
   }
 
   Stream<MemoState> _mapCreateMemoToState(CreateMemo event) async* {
     List<MemoEntity> _memos;
     await _repository.insertMemo(event.memoEntity);
     _memos = await _repository.loadMemos();
-    yield MemosLoadSuccess(memos: _memos);
+    yield LoadMemosSuccess(memos: _memos);
   }
 
   Stream<MemoState> _mapUpdateMemoToState(UpdateMemo event) async* {
     List<MemoEntity> _memos;
     await _repository.updateMemo(event.memo);
     _memos = await _repository.loadMemos();
-    yield MemosLoadSuccess(memos: _memos);
+    yield LoadMemosSuccess(memos: _memos);
   }
 
-  Stream<MemoState> _mapDeleteMemoToState(DeleteMemo event) async* {
-    List<MemoEntity> _memos;
-    await _repository.deleteMemo(event.memo);
-    _memos = await _repository.loadMemos();
-    print("DELETED.");
-    yield MemosLoadSuccess(memos: _memos);
-  }
-
-  _saveMemos(List<MemoEntity> memos) {
-    // return _repository.saveMemos(memos);
-  }
 
   @override
   Future<void> close() {
-    // _subscription?.cancel();
     return super.close();
   }
 }
+

@@ -26,6 +26,7 @@ dependencies:
   sqflite: ^1.1.6
   path_provider: ^1.2.0
   path: ^1.6.2
+  dart_numerics: ^0.0.5
 
 dev_dependencies:
   flutter_test:

@@ -91,7 +91,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget _FAB(BuildContext context) {
     return BlocBuilder<BookmarkBloc, BookmarkState>(builder: (context, state) {
-      print("state: ${state}");
       if (state is BookmarkUnloaded) {
         return FloatingActionButton(
           onPressed: () {},
@@ -99,8 +98,8 @@ class _DetailScreenState extends State<DetailScreen> {
       } else if (state is BookmarkLoadSuccess) {
         return FloatingActionButton(
           child: state.isBookmarked
-              ? Icon(Icons.favorite)
-              : Icon(Icons.favorite_border),
+              ? Icon(Icons.star)
+              : Icon(Icons.star_border),
           onPressed: () {
             MemoEntity memo = MemoEntity(
               id: widget.memo.id,
@@ -114,8 +113,8 @@ class _DetailScreenState extends State<DetailScreen> {
       } else if (state is BookmarkToggleSuccess) {
         return FloatingActionButton(
           child: state.isBookmarked
-              ? Icon(Icons.favorite)
-              : Icon(Icons.favorite_border),
+              ? Icon(Icons.star)
+              : Icon(Icons.star_border),
           onPressed: () {
             MemoEntity memo = MemoEntity(
               id: widget.memo.id,
@@ -132,13 +131,5 @@ class _DetailScreenState extends State<DetailScreen> {
         );
       }
     });
-//    return FloatingActionButton(
-//      child: widget.memo.isBookmarked
-//        ? Icon(Icons.favorite)
-//        : Icon(Icons.favorite_border),
-//      onPressed: () {
-//        _memoBloc.add(ToggleBookmark(widget.memo));
-//      },
-//    );
   }
 }

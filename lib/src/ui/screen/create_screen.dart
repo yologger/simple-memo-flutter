@@ -36,7 +36,7 @@ class _CreateScreenState extends State<CreateScreen> {
 
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text("CREATE SCREEN"),
+      title: Text("CREATE"),
       actions: <Widget>[
         Builder(
           builder: (context) {

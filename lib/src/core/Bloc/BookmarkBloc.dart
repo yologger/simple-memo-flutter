@@ -11,7 +11,7 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
 
   MemoRepository _repository;
   MemoBloc memoBloc;
-
+ 
   BookmarkBloc({this.memoBloc}) {
     _repository = MemoRepository();
   }

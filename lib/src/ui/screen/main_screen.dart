@@ -14,7 +14,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
   MemoBloc _memoBloc;
 
   @override
@@ -47,14 +46,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return BlocBuilder<MemoBloc, MemoState>(
-
-        builder: (context, state) {
+    return BlocBuilder<MemoBloc, MemoState>(builder: (context, state) {
       if (state is MemosUnloaded) {
         return Center(child: Text("Loading..."));
-      } else if (state is MemosLoadSuccess) {
-        print("MEMOSLOADSUCCESS");
-        print("LENGTH: ${state.memos.length}");
+      } else if (state is LoadMemosSuccess) {
         if (state.memos.isEmpty) {
           return Center(child: Text("No Data"));
         } else {
@@ -70,14 +65,20 @@ class _MainScreenState extends State<MainScreen> {
                           end: Alignment.centerRight,
                         ),
                       ),
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Icon(Icons.delete, color: Colors.white,),
-                            Icon(Icons.delete, color: Colors.white,),
-                          ],
-                        ),
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
                     ),
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) async {
@@ -89,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
                     child: ListTile(
                       title: Text("${state.memos[index].title}"),
                       trailing: state.memos[index].isBookmarked
-                          ? Icon(Icons.favorite, color: AppColor.secondary)
+                          ? Icon(Icons.star, color: AppColor.secondary)
                           : null,
                       onTap: () {
                         MemoBloc memoBloc = BlocProvider.of<MemoBloc>(context);
@@ -110,7 +111,7 @@ class _MainScreenState extends State<MainScreen> {
               separatorBuilder: (context, index) => const Divider(),
               itemCount: state.memos.length);
         }
-      } else if (state is MemoCreateSuccess) {
+      } else if (state is CreateMemoSuccess) {
         return Center(child: Text("CREATED"));
       } else {
         return Center(child: Text("Unknown Error"));

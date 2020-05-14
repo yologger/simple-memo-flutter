@@ -70,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return BlocListener<MemoBloc, MemoState>(
       bloc: _memoBloc,
       listener: (context, state) {
-        if (state is MemosLoadSuccess) {
+        if (state is LoadMemosSuccess) {
           setState(() {
             _memos = state.memos;
           });

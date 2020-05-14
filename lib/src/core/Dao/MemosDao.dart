@@ -1,4 +1,3 @@
-
 import 'package:simplememo/src/core/Dao/DaoImpl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
@@ -12,7 +11,6 @@ import 'package:simplememo/src/core/Service/IService.dart';
 const String MEMOS_TABLE = "Memos";
 
 class MemosDao implements DaoImpl {
-
   MemosDao._();
 
   static final MemosDao _db = MemosDao._();
@@ -39,7 +37,7 @@ class MemosDao implements DaoImpl {
             title TEXT,
             content TEXT,
             is_bookmarked INTEGER NOT NULL DEFAULT 0,
-            ordering INTEGER
+            is_deleted INTEGER NOT NULL DEFAULT 0
           )
         ''');
     }, onUpgrade: (db, oldVersion, newVersion) {});
@@ -47,8 +45,15 @@ class MemosDao implements DaoImpl {
 
   getAllMemos() async {
     final db = await database;
-    String sql = "SELECT * FROM ${MEMOS_TABLE}";
-    var rawData = await db.rawQuery(sql);
+    String sql = "SELECT * FROM ${MEMOS_TABLE} where is_deleted = ?";
+    var rawData = await db.rawQuery(sql, [0]);
+    return rawData;
+  }
+
+  getAllMemosFromTrash() async {
+    final db = await database;
+    String sql = "SELECT * FROM ${MEMOS_TABLE} where is_deleted = ?";
+    var rawData = await db.rawQuery(sql, [1]);
     return rawData;
   }
 
@@ -67,22 +72,12 @@ class MemosDao implements DaoImpl {
       String sql =
           'UPDATE ${MEMOS_TABLE} SET title = ?, content = ? WHERE  id = ?';
       var res = await db.rawUpdate(sql, [memo.title, memo.content, memo.id]);
-      print("RESULT: ${res}");
       return res;
     } catch (error) {
       print(error);
     }
   }
 
-  deleteMemo(MemoEntity memo) async {
-    try {
-      final db = await database;
-      String sql = 'DELETE FROM ${MEMOS_TABLE} WHERE id = ?';
-      var res = await db.rawDelete(sql, [memo.id]);
-    } catch(error) {
-      print(error);
-    }
-  }
 
   getIsBookmarked(MemoEntity memo) async {
     try {
@@ -110,5 +105,36 @@ class MemosDao implements DaoImpl {
 
     String sql = "SELECT * FROM ${MEMOS_TABLE} WHERE id = ?";
     var result = await db.rawQuery(sql, [id]);
+  }
+
+  deleteMemo(MemoEntity memo) async {
+    try {
+      final db = await database;
+      String sql = 'UPDATE ${MEMOS_TABLE} SET is_deleted = 1 WHERE id = ?';
+      await db.rawUpdate(sql, [memo.id]);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  deleteMemoFromTrash(MemoEntity memo) async {
+    try {
+      final db = await database;
+      String sql = 'DELETE FROM ${MEMOS_TABLE} WHERE id = ?';
+      var res = await db.rawDelete(sql, [memo.id]);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+
+  restoreMemoFromTrash(MemoEntity memo) async {
+    try {
+      final db = await database;
+      String sql = 'UPDATE ${MEMOS_TABLE} SET is_deleted = 0 WHERE id = ?';
+      await db.rawUpdate(sql, [memo.id]);
+    } catch (error) {
+      print(error);
+    }
   }
 }
