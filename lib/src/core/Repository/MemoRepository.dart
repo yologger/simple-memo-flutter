@@ -21,12 +21,12 @@ class MemoRepository implements RepositoryImpl {
     List<MemoEntity> memos = rawData.isNotEmpty
         ? rawData
             .map((rawMemo) => MemoEntity(
-                  id: rawMemo["id"],
-                  writer: rawMemo["writer"],
-                  title: rawMemo["title"],
-                  content: rawMemo["content"],
-                  isBookmarked: rawMemo["is_bookmarked"] == 0 ? false : true,
-                ))
+                id: rawMemo["id"],
+                writer: rawMemo["writer"],
+                title: rawMemo["title"],
+                content: rawMemo["content"],
+                isBookmarked: rawMemo["is_bookmarked"] == 0 ? false : true,
+                sequence: rawMemo["sequence"]))
             .toList()
         : [];
 
@@ -41,12 +41,12 @@ class MemoRepository implements RepositoryImpl {
     List<MemoEntity> memos = rawData.isNotEmpty
         ? rawData
             .map((rawMemo) => MemoEntity(
-                  id: rawMemo["id"],
-                  writer: rawMemo["writer"],
-                  title: rawMemo["title"],
-                  content: rawMemo["content"],
-                  isBookmarked: rawMemo["is_bookmarked"] == 0 ? false : true,
-                ))
+                id: rawMemo["id"],
+                writer: rawMemo["writer"],
+                title: rawMemo["title"],
+                content: rawMemo["content"],
+                isBookmarked: rawMemo["is_bookmarked"] == 0 ? false : true,
+                sequence: rawMemo["sequence"]))
             .toList()
         : [];
 
@@ -99,5 +99,9 @@ class MemoRepository implements RepositoryImpl {
     for (MemoEntity memo in memos) {
       await _dbService.memosDao.restoreMemosFromTrash(memo);
     }
+  }
+
+  swapMemos(MemoEntity memo1, MemoEntity memo2) async {
+    await _dbService.memosDao.swapMemos(memo1, memo2);
   }
 }

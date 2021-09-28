@@ -12,3 +12,4 @@ export 'package:simplememo/src/core/Bloc/TrashBloc.dart';
 export 'package:simplememo/src/core/Bloc/TrashEvent.dart';
 export 'package:simplememo/src/core/Bloc/TrashState.dart';
 
+

@@ -14,6 +14,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
   MemoBloc _memoBloc;
 
   @override

@@ -8,7 +8,7 @@ class MemoEntity implements EntityImpl {
   String _title;
   String _content;
   bool _isBookmarked;
-  int _ordering;
+  int _sequence;
 
   get id => _id;
 
@@ -30,9 +30,9 @@ class MemoEntity implements EntityImpl {
 
   set isBookmarked(value) => _isBookmarked = value;
 
-  get ordering => _ordering;
+  get sequence => _sequence;
 
-  set ordering(value) => _ordering = value;
+  set sequence(value) => _sequence = value;
 
   MemoEntity(
       {int id,
@@ -40,11 +40,11 @@ class MemoEntity implements EntityImpl {
       String title,
       String content,
       bool isBookmarked = false,
-      int ordering})
+      int sequence})
       : _id = id,
         _writer = writer,
         _title = title,
         _content = content,
         _isBookmarked = isBookmarked,
-        _ordering = ordering;
+        _sequence = sequence;
 }

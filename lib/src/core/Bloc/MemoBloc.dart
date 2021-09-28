@@ -34,8 +34,8 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
       yield* _mapUpdateMemoToState(event);
     } else if (event is DeleteMemo) {
       yield* _mapDeleteMemoToState(event);
-    } else if (event is SwapMemos) {
-      yield* _mapSwapMemosToState(event);
+//    } else if (event is SwapMemos) {
+//      yield* _mapSwapMemosToState(event);
     }
   }
 //
@@ -54,11 +54,11 @@ class MemoBloc extends Bloc<MemoEvent, MemoState> {
     yield LoadMemosSuccess(memos: _memos);
   }
 
-  Stream<MemoState> _mapSwapMemosToState(SwapMemos event) async* {
-    List<MemoEntity> _memos;
-    _memos = await _repository.loadMemos();
-    yield LoadMemosSuccess(memos: _memos);
-  }
+//  Stream<MemoState> _mapSwapMemosToState(SwapMemos event) async* {
+//    List<MemoEntity> _memos;
+//    _memos = await _repository.loadMemos();
+//    yield LoadMemosSuccess(memos: _memos);
+//  }
 
   Stream<MemoState> _mapLoadMemosToState() async* {
     List<MemoEntity> _memos;

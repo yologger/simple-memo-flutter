@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplememo/src/core/Bloc/Bloc.dart';
+import 'package:simplememo/src/core/Bloc/EditBloc.dart';
+import 'package:simplememo/src/core/Bloc/EditEvent.dart';
 import 'package:simplememo/src/ui/screen/edit_screen.dart';
 import 'package:simplememo/src/ui/screen/secret_screen.dart';
 import 'package:simplememo/src/ui/screen/trash_screen.dart';
@@ -49,8 +51,14 @@ class TabBarController extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.reorder, color: Colors.white),
           onPressed: () {
+            MemoBloc memoBloc = BlocProvider.of<MemoBloc>(context);
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => EditScreen()));
+                context,
+                MaterialPageRoute(builder: (context) => BlocProvider<EditBloc>(
+                    create: (BuildContext context) => EditBloc(memoBloc: memoBloc)..add(LoadAllMemos()),
+                    child: EditScreen()
+                ))
+            );
           },
         ),
         IconButton(

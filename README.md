@@ -1,17 +1,21 @@
-# simplememo
+# Simple Memo with Flutter
 
-simple memo
+## Introduction
+**S Memo** is a simple notepad app. You can also see Heart to Heart for iOS [here](https://github.com/yologger/simple_memo_ios) and for Android [here](). S memo is based on **Bloc pattern**.
 
-## Getting Started
+## Screenshots
+<img src="/imgs/1.jpg" width="200">
+<img src="/imgs/create_post.gif" width="200">
+<img src="/imgs/theme.gif" width="200">
+<img src="/imgs/update.gif" width="200">
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# simple_memo-flutter-
+## Dependencies
+Heart to Heart for Android has following dependencies:
+* Cupertino icons
+* Equatable
+* RxDart
+* SQFlite
+* Flutter Bloc
+* Path
+* Path Provider
+* Dart Numerics

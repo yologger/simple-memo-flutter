@@ -56,12 +56,13 @@ class ToggleBookmark extends MemoEvent {
   List<Object> get props => [memo];
 }
 
-class SwapMemos extends MemoEvent {
-  final MemoEntity memo1;
-  final MemoEntity memo2;
-
-  SwapMemos(this.memo1, this.memo2);
-
-  @override
-  List<Object> get props => [memo1, memo2];
-}
+//
+//class SwapMemos extends MemoEvent {
+//  final MemoEntity memo1;
+//  final MemoEntity memo2;
+//
+//  SwapMemos(this.memo1, this.memo2);
+//
+//  @override
+//  List<Object> get props => [memo1, memo2];
+//}

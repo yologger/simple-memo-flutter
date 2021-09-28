@@ -38,7 +38,7 @@ class MemosDao implements DaoImpl {
             content TEXT,
             is_bookmarked INTEGER NOT NULL DEFAULT 0,
             is_deleted INTEGER NOT NULL DEFAULT 0,
-            sequence INTEGER UNIQUE
+            sequence INTEGER
           )
         ''');
 
@@ -55,9 +55,9 @@ class MemosDao implements DaoImpl {
 
   getAllMemos() async {
     final db = await database;
-    String sql = "SELECT * FROM ${MEMOS_TABLE} where is_deleted = ?";
+    String sql = "SELECT * FROM ${MEMOS_TABLE} where is_deleted = ? ORDER BY sequence ASC";
     var rawData = await db.rawQuery(sql, [0]);
-    print("RAWDATA: ${rawData}");
+
     return rawData;
   }
 
@@ -142,6 +142,18 @@ class MemosDao implements DaoImpl {
       final db = await database;
       String sql = 'UPDATE ${MEMOS_TABLE} SET is_deleted = 0 WHERE id = ?';
       await db.rawUpdate(sql, [memo.id]);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  swapMemos(MemoEntity memo1, MemoEntity memo2) async {
+    try {
+      final db = await database;
+      String sql = 'UPDATE ${MEMOS_TABLE} SET sequence = ${memo2.sequence} WHERE id = ${memo1.id}';
+      await db.rawUpdate(sql);
+      sql = 'UPDATE ${MEMOS_TABLE} SET sequence = ${memo1.sequence} WHERE id = ${memo2.id}';
+      await db.rawUpdate(sql);
     } catch (error) {
       print(error);
     }
